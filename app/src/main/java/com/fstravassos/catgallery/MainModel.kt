@@ -48,9 +48,15 @@ class MainModel {
 
             if (obj != null) {
                 val list = obj.data.asList()
-                val links = list.stream().filter { it.images != null && !it.images.isEmpty() }
-                    .map { it.images[0].link }.collect(Collectors.toList<String>())
-                mCats.postValue(links)
+                val listOfImages = list.stream().filter { !it.images.isNullOrEmpty() }
+                    .map { it.images }.collect(Collectors.toList<Array<Image>>())
+
+                val listOfLinks = listOfImages.stream().map {
+                    it.asList().stream().filter { !it.link.isNullOrEmpty() }.map { it.link }
+                        .collect(Collectors.toList<String>()) }
+                    .collect(Collectors.toList<List<String>>()).flatten()
+
+                mCats.postValue(listOfLinks)
             }
         }
     }
@@ -65,4 +71,4 @@ class Data(var data: Array<Item>)
 
 class Item(var images: Array<Image>)
 
-class Image(var link: String)
+class Image(var link: String?)

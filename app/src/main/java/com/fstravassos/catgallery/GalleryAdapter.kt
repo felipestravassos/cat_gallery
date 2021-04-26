@@ -2,7 +2,6 @@ package com.fstravassos.catgallery
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
@@ -15,9 +14,8 @@ class GalleryAdapter :
     private var mList = ArrayList<String>()
 
     override fun onCreateViewHolder(parent: ViewGroup, layout: Int): ViewHolder {
-        val binding = DataBindingUtil.inflate<ItemPictureBinding>(
-            LayoutInflater.from(parent.context), layout, parent, false
-        )
+        val layoutInflater = LayoutInflater.from(parent.context)
+        val binding = ItemPictureBinding.inflate(layoutInflater, parent, false)
 
         return ViewHolder(binding)
     }
@@ -28,10 +26,6 @@ class GalleryAdapter :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(mList[position])
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        return R.layout.item_picture
     }
 
     fun reload(list: List<String>) {
